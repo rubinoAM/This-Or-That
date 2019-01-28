@@ -24,6 +24,9 @@ connection.connect();
 app.set('views','views'); //Picks directory | Arg1: Name of property & Arg2: Name of Folder
 app.set('view engine','ejs'); //Sets rendering engine to EJS
 
+//SET UP PUBLIC FOLDER
+app.use(express.static('public'));
+
 app.get('/',(req,res,next)=>{
     res.render('index',{    //Renders the index file in views
 
