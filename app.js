@@ -30,8 +30,10 @@ app.use(express.static('public')); //express.static() is middleware too!
 app.get('/',(req,res,next)=>{
     const gpQuery = `SELECT * FROM guineapigs`; //Our SQL query
     connection.query(gpQuery,(err,results)=>{   //Passing the query into our connection
+        if(err){throw(err);} //Troubleshooting for errors
+        const rand = Math.floor(Math.random() * results.length); //Random number from 0 to results.length
         res.render('index',{    //Renders the index file in views
-            guineapigs:results, //Populates the query results into the res object
+            guineapig:results[rand], //Populates the query results into the res object
         });
     })
 });

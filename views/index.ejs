@@ -2,14 +2,13 @@
 <head>
     <title>This or That</title>
     <link rel="stylesheet" href="/styles.css" />
+    <link href="https://fonts.googleapis.com/css?family=Leckerli+One|Patrick+Hand" rel="stylesheet">
 </head>
 <body>
-<% guineapigs.forEach((guineapig)=>{ %>
-    <div>
+    <div class="gp_container">
         <img class="gp_img" src="/images/<%= guineapig.image %>" /> <!--In this case /images/ worked-->
-        <h3>Like This or Not That?</h3>
+        <h3>"Like This!" or "Not That!"</h3>
         <p>Laboris veniam eu elit nulla reprehenderit pariatur aute duis officia adipisicing ut. Cupidatat consectetur aute ipsum fugiat. Deserunt labore laboris dolor veniam nulla in exercitation aute eu voluptate.</p>
     </div>
-<% }); %>
 </body>
 </html>
