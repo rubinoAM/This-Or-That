@@ -1,4 +1,18 @@
+body{
+    margin:0;
+    padding:0;
+}
+
+div{
+    width:450px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+}
+
 .gp_img{
-    width:480px;
-    height:360px;
+    width:450px;
+    height:325px;
+    object-fit:cover;
 }
