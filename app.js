@@ -1,11 +1,4 @@
 //This is an Express app, so let's get Express!
-/*
-         _  _
-        (o)(o)--.
-         \../ (  )
-         m\/m--m'`--.
-
-*/
 
 const express = require('express'); //This grabs Express
 let app = express(); //This makes an Express app
@@ -37,6 +30,16 @@ app.get('/',(req,res,next)=>{
         });
     })
 });
+
+app.get('/vote/:value/:id',(req,res,next)=>{
+    const value = req.params.value;
+    const g_id = req.params.id;
+    const insertQuery = `INSERT INTO votes (id,gp_id,score) VALUES (DEFAULT,?,?)`;
+    connection.query(insertQuery,[g_id,value],(err,results)=>{
+        if(err){throw(err);}
+        res.redirect('/');
+    });
+})
 
 console.log("App is listening on Port 4442");
 app.listen(4442); //You type in localhost:4442 to access this page

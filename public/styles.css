@@ -1,34 +1,29 @@
 body{
-    margin:0;
-    padding:0;
     background:#75a9ec;
 }
 
 .gp_container{
-    margin:0 auto;
-    width:450px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
     background-color:#f4f5fc;
     color:#252525;
     border-radius:0 0 2rem 2rem;
 }
 
-.gp_container h3{
-    font-size:2rem;
+.gp_container h2{
+    font-size:3.5rem;
     font-family:'Leckerli One',cursive;
 }
 
-.gp_container p{
-    font-size:1.25rem;
+.gp_container h3{
+    font-size:3.25rem;
     font-family:'Patrick Hand',cursive;
-    padding:1rem;
+}
+
+.gp_container button{
+    font-family:'Patrick Hand',cursive;
 }
 
 .gp_img{
-    width:450px;
+    max-width:450px;
     height:325px;
     object-fit:cover;
 }

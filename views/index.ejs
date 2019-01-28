@@ -1,14 +1,22 @@
 <html>
 <head>
-    <title>This or That</title>
-    <link rel="stylesheet" href="/styles.css" />
-    <link href="https://fonts.googleapis.com/css?family=Leckerli+One|Patrick+Hand" rel="stylesheet">
+    <% include header %>
 </head>
 <body>
-    <div class="gp_container">
-        <img class="gp_img" src="/images/<%= guineapig.image %>" /> <!--In this case /images/ worked-->
-        <h3>"Like This!" or "Not That!"</h3>
-        <p>Laboris veniam eu elit nulla reprehenderit pariatur aute duis officia adipisicing ut. Cupidatat consectetur aute ipsum fugiat. Deserunt labore laboris dolor veniam nulla in exercitation aute eu voluptate.</p>
+    <div class="container gp_container">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <img class="gp_img" src="/images/<%= guineapig.image %>" /> <!--In this case /images/ worked-->
+                <h2>"Like This!" or "Not That!"</h2>
+                <h3><%= guineapig.name %></h3>
+                <a href="/vote/likethis/<%= guineapig.id %>">
+                    <button class="btn btn-primary">LIKE THIS!</button>
+                </a>  
+                <a href="/vote/notthat/<%= guineapig.id %>">
+                    <button class="btn btn-danger">NOT THAT!</button>
+                </a>   
+            </div>
+        </div>
     </div>
 </body>
 </html>
