@@ -25,12 +25,15 @@ app.set('views','views'); //Picks directory | Arg1: Name of property & Arg2: Nam
 app.set('view engine','ejs'); //Sets rendering engine to EJS
 
 //SET UP PUBLIC FOLDER
-app.use(express.static('public'));
+app.use(express.static('public')); //express.static() is middleware too!
 
 app.get('/',(req,res,next)=>{
-    res.render('index',{    //Renders the index file in views
-
-    });
+    const gpQuery = `SELECT * FROM guineapigs`; //Our SQL query
+    connection.query(gpQuery,(err,results)=>{   //Passing the query into our connection
+        res.render('index',{    //Renders the index file in views
+            guineapigs:results, //Populates the query results into the res object
+        });
+    })
 });
 
 console.log("App is listening on Port 4442");
