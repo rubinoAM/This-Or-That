@@ -25,9 +25,10 @@ app.set('views','views'); //Picks directory | Arg1: Name of property & Arg2: Nam
 app.set('view engine','ejs'); //Sets rendering engine to EJS
 
 app.get('/',(req,res,next)=>{
-    res.render('index',{});
+    res.render('index',{    //Renders the index file in views
+
+    });
 });
 
 console.log("App is listening on Port 4442");
 app.listen(4442); //You type in localhost:4442 to access this page
-
