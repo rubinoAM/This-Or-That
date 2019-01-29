@@ -98,5 +98,30 @@ app.post('/registerProcess',(req,res,next)=>{
     })
 });
 
+app.get('/login',(req,res,next)=>{
+    res.render('login',{});
+});
+
+app.post('/loginProcess',(req,res,next)=>{
+    //res.json(req.body);
+    const email = req.body.email;
+    const password = req.body.password; //English version of password
+    const checkPasswordQuery = `SELECT * FROM users WHERE email = ?;`;
+    connection.query(checkPasswordQuery,[email],(err,results)=>{
+        if(err){throw err;}
+        if(results.length == 0){ //The user isn't in the DB
+            res.redirect('/?msg=noUser');
+        }
+        else{
+            const passwordsMatch = bcrypt.compareSync(password,results[0].hash);
+            if(!passwordsMatch){ //The password doesn't match
+                res.redirect('/?msg=badPass');
+            } else {
+                res.redirect('/?msg=loginSuccess');
+            }
+        }
+    });
+});
+
 console.log("App is listening on Port 4442");
 app.listen(4442); //You type in localhost:4442 to access this page
