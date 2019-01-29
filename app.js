@@ -53,34 +53,34 @@ app.get('/',(req,res,next)=>{
 
     if(!req.session.loggedIn){
         res.redirect('/login?msg=mustLogin');
+    } else {
+        const gpQuery = `SELECT * FROM guineapigs`; //Our SQL query
+        connection.query(gpQuery,(err,results)=>{   //Passing the query into our connection
+            if(err){throw(err);} //Troubleshooting for errors
+
+            //Check for msg query string
+            let msg;
+            if(req.query.msg == 'regSuccess'){
+                msg = 'You have successfully registered!';
+                console.log(msg);
+            } else if(req.query.msg == 'loginSuccess'){
+                msg = 'You have successfully logged in!';
+            }
+
+            const rand = Math.floor(Math.random() * results.length); //Random number from 0 to results.length
+            res.render('index',{    //Renders the index file in views
+                guineapig:results[rand], //Populates the query results into the res object
+                msg
+            });
+        })
     }
-
-    const gpQuery = `SELECT * FROM guineapigs`; //Our SQL query
-    connection.query(gpQuery,(err,results)=>{   //Passing the query into our connection
-        if(err){throw(err);} //Troubleshooting for errors
-
-        //Check for msg query string
-        let msg;
-        if(req.query.msg == 'regSuccess'){
-            msg = 'You have successfully registered!';
-            console.log(msg);
-        } else if(req.query.msg == 'loginSuccess'){
-            msg = 'You have successfully logged in!';
-        }
-
-        const rand = Math.floor(Math.random() * results.length); //Random number from 0 to results.length
-        res.render('index',{    //Renders the index file in views
-            guineapig:results[rand], //Populates the query results into the res object
-            msg
-        });
-    })
 });
 
 app.get('/vote/:value/:id',(req,res,next)=>{
     const value = req.params.value;
     const g_id = req.params.id;
-    const insertQuery = `INSERT INTO votes (id,gp_id,score) VALUES (DEFAULT,?,?)`;
-    connection.query(insertQuery,[g_id,value],(err,results)=>{
+    const insertQuery = `INSERT INTO votes (id,gp_id,score,u_id) VALUES (DEFAULT,?,?,?)`;
+    connection.query(insertQuery,[g_id,value,req.session.uid],(err,results)=>{
         if(err){throw(err);}
         res.redirect('/');
     });
@@ -157,7 +157,7 @@ app.post('/loginProcess',(req,res,next)=>{
                 //Sessions store data on the server with a key (cookie) in the browser
                 req.session.name = results[0].name;
                 req.session.email = results[0].email;
-                req.session.id = results[0].id;
+                req.session.uid = results[0].id;
                 req.session.loggedIn = true;
                 res.redirect('/?msg=loginSuccess');
             }
