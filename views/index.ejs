@@ -6,19 +6,21 @@
 <body>
     <% include navbar %>
     <div class="container gp_container">
-        <div class="row">
-            <div class="col-sm-12 text-center">
-                <img class="gp_img" src="/images/<%= guineapig.image %>" /> <!--In this case /images/ worked-->
-                <h2>"Like This!" or "Not That!"</h2>
-                <h3><%= guineapig.name %></h3>
-                <a href="/vote/likethis/<%= guineapig.id %>">
-                    <button class="btn btn-primary">LIKE THIS!</button>
-                </a>  
-                <a href="/vote/notthat/<%= guineapig.id %>">
-                    <button class="btn btn-danger">NOT THAT!</button>
-                </a>   
+        <% if(guineapig){ %>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <img class="gp_img" src="/images/<%= guineapig.image %>" /> <!--In this case /images/ worked-->
+                    <h2>"Like This!" or "Not That!"</h2>
+                    <h3><%= guineapig.name %></h3>
+                    <a href="/vote/likethis/<%= guineapig.id %>">
+                        <button class="btn btn-primary">LIKE THIS!</button>
+                    </a>  
+                    <a href="/vote/notthat/<%= guineapig.id %>">
+                        <button class="btn btn-danger">NOT THAT!</button>
+                    </a> 
+                </div>
             </div>
-        </div>
+        <% } %>  
         <div class="row">
             <div clss="col-sm-12 text-center">
                 <h2 class="text-info"><%= msg %>
