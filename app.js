@@ -42,12 +42,13 @@ app.get('/vote/:value/:id',(req,res,next)=>{
 })
 
 app.get('/standings', (req,res,next)=>{
-    const standingsQuery = `SELECT SUM(IF(score="likethis",1,-1)),MAX(guineapigs.name) from votes
+    const standingsQuery = `SELECT SUM(IF(score="likethis",1,-1)) AS total_score,MAX(guineapigs.name) AS gp_name from votes
         INNER JOIN guineapigs ON votes.gp_id = guineapigs.id
-        GROUP BY guineapigs.name;`;
+        GROUP BY guineapigs.name
+        ORDER BY total_score DESC;`;
     connection.query(standingsQuery,(err,results)=>{
         if(err){throw(err);}
-        res.render('standings');
+        res.render('standings',{results});
     });
 });
 

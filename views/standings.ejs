@@ -1,0 +1,19 @@
+<html>
+<head>
+    <% include header %>
+</head>
+<body>
+    <div class="container gp_container">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <% results.forEach((guineapig)=>{ %>
+                    <div class="guinea-pig-name">
+                        <%= guineapig.gp_name %>
+                        <%= guineapig.total_score %>
+                    </div>
+                <% }); %>   
+            </div>
+        </div>
+    </div>
+</body>
+</html>
