@@ -68,7 +68,11 @@ app.get('/standings', (req,res,next)=>{
 });
 
 app.get('/register',(req,res,next)=>{
-    res.render('register',{});
+    let msg;
+    if(req.query.msg == 'register'){
+        msg = "This email address is already registered.";
+    }
+    res.render('register',{msg});
 });
 
 app.post('/registerProcess',(req,res,next)=>{
