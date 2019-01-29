@@ -5,12 +5,6 @@ const config = {
         password:'x',
         database:'wildOrNot',
     },
-    /*aCuteAnt:`
-        /\/\
-          \_\  _..._
-          (" )(_..._)
-           ^^  // \\
-    `,*/
 };
 
 module.exports = config; //module.exports can only export one thing at a time

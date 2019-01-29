@@ -41,5 +41,14 @@ app.get('/vote/:value/:id',(req,res,next)=>{
     });
 })
 
+app.get('/standings', (req,res,next)=>{
+    const standingsQuery = `SELECT * FROM votes
+        INNER JOIN guineapigs ON votes.gp_id = guineapigs.id`;
+    connection.query(standingsQuery,(err,results)=>{
+        if(err){throw(err);}
+        res.render('standings');
+    });
+});
+
 console.log("App is listening on Port 4442");
 app.listen(4442); //You type in localhost:4442 to access this page
