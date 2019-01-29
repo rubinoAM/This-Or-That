@@ -3,11 +3,20 @@
 const express = require('express'); //This grabs Express
 let app = express(); //This makes an Express app
 const helmet = require('helmet'); //Gives basic security protection for Express
+const config = require('./config'); //Grabs the config from the current directory
 const bcrypt = require('bcrypt-nodejs');
+const expressSession = require('express-session');
 app.use(helmet()); //Helmets protect bikers and Express apps :^ )
     //app.use() adds Middleware (any function that has access to req and res)
 
-const config = require('./config'); //Grabs the config from the current directory
+const sessionOptions = ({
+    secret: config.sessionSecret,
+    resave: false,
+    saveUnitialized: true,
+    //cookie: {secure:true} This is needed when you have an https site
+});
+app.use(expressSession(sessionOptions));
+
 const mysql = require('mysql'); //Grabs mysql
 let connection = mysql.createConnection(config.db); //Create mysql connection to database
 
@@ -26,16 +35,37 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
+//Middleware to send user data to view if logged in
+app.use('*',(req,res,next)=>{
+    if(req.session.loggedIn){
+        res.locals.name = req.session.name;
+        res.locals.email = req.session.email;
+        res.locals.id = req.session.id;
+    } else {
+        res.locals.name = '';
+        res.locals.email = '';
+        res.locals.id = '';
+    }
+    next();
+})
+
 app.get('/',(req,res,next)=>{
+
+    if(!req.session.loggedIn){
+        res.redirect('/login?msg=mustLogin');
+    }
+
     const gpQuery = `SELECT * FROM guineapigs`; //Our SQL query
     connection.query(gpQuery,(err,results)=>{   //Passing the query into our connection
         if(err){throw(err);} //Troubleshooting for errors
 
         //Check for msg query string
         let msg;
-        if(req.query.msg){
+        if(req.query.msg == 'regSuccess'){
             msg = 'You have successfully registered!';
             console.log(msg);
+        } else if(req.query.msg == 'loginSuccess'){
+            msg = 'You have successfully logged in!';
         }
 
         const rand = Math.floor(Math.random() * results.length); //Random number from 0 to results.length
@@ -99,28 +129,44 @@ app.post('/registerProcess',(req,res,next)=>{
 });
 
 app.get('/login',(req,res,next)=>{
-    res.render('login',{});
+    let msg;
+    if(req.query.msg == 'noUser'){
+        msg = "This email isn't registered in our system. Please try typing it out again or register."
+    } else if(req.query.msg == 'badPass'){
+        msg = "This password is incorrect. Please try entering again (be wary of case sensitivity)."
+    }
+
+    res.render('login',{msg});
 });
 
 app.post('/loginProcess',(req,res,next)=>{
-    //res.json(req.body);
     const email = req.body.email;
     const password = req.body.password; //English version of password
     const checkPasswordQuery = `SELECT * FROM users WHERE email = ?;`;
     connection.query(checkPasswordQuery,[email],(err,results)=>{
         if(err){throw err;}
         if(results.length == 0){ //The user isn't in the DB
-            res.redirect('/?msg=noUser');
-        }
-        else{
+            res.redirect('/login?msg=noUser');
+        } else {
             const passwordsMatch = bcrypt.compareSync(password,results[0].hash);
             if(!passwordsMatch){ //The password doesn't match
-                res.redirect('/?msg=badPass');
+                res.redirect('/login?msg=badPass');
             } else {
+                //Every single http request (route) is a completely new request
+                //Cookies store data in the browser with a key on the server
+                //Sessions store data on the server with a key (cookie) in the browser
+                req.session.name = results[0].name;
+                req.session.email = results[0].email;
+                req.session.id = results[0].id;
+                req.session.loggedIn = true;
                 res.redirect('/?msg=loginSuccess');
             }
         }
     });
+});
+
+app.get('/logout',(req,res,next)=>{
+    req.session.destroy();
 });
 
 console.log("App is listening on Port 4442");

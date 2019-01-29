@@ -5,6 +5,7 @@ const config = {
         password:'x',
         database:'wildOrNot',
     },
+    sessionSecret:'thisOrThat321',
 };
 
 module.exports = config; //module.exports can only export one thing at a time
