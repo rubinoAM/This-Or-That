@@ -167,6 +167,7 @@ app.post('/loginProcess',(req,res,next)=>{
 
 app.get('/logout',(req,res,next)=>{
     req.session.destroy();
+    res.redirect('/login?msg=loggedOut');
 });
 
 console.log("App is listening on Port 4442");
