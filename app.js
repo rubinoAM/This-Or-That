@@ -42,8 +42,9 @@ app.get('/vote/:value/:id',(req,res,next)=>{
 })
 
 app.get('/standings', (req,res,next)=>{
-    const standingsQuery = `SELECT * FROM votes
-        INNER JOIN guineapigs ON votes.gp_id = guineapigs.id`;
+    const standingsQuery = `SELECT SUM(IF(score="likethis",1,-1)),MAX(guineapigs.name) from votes
+        INNER JOIN guineapigs ON votes.gp_id = guineapigs.id
+        GROUP BY guineapigs.name;`;
     connection.query(standingsQuery,(err,results)=>{
         if(err){throw(err);}
         res.render('standings');
