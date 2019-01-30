@@ -1,5 +1,4 @@
-//This is an Express app, so let's get Express!
-
+const fs = require('fs'); //File system for uploading
 const express = require('express'); //This grabs Express
 let app = express(); //This makes an Express app
 const helmet = require('helmet'); //Gives basic security protection for Express
@@ -8,6 +7,9 @@ const bcrypt = require('bcrypt-nodejs');
 const expressSession = require('express-session');
 app.use(helmet()); //Helmets protect bikers and Express apps :^ )
     //app.use() adds Middleware (any function that has access to req and res)
+
+const multer = require('multer');
+const upload = multer({dest:'public/images/'});
 
 const sessionOptions = ({
     secret: config.sessionSecret,
@@ -174,6 +176,16 @@ app.post('/loginProcess',(req,res,next)=>{
 app.get('/logout',(req,res,next)=>{
     req.session.destroy();
     res.redirect('/login?msg=loggedOut');
+});
+
+app.get('/upload',(req,res,next)=>{
+    res.render('upload',{});
+});
+
+app.post('/formSubmit',upload.single('imageToUpload'),(req,res,next)=>{
+    //Get animal name from req.body 
+    //Get image from req.file and convert it from binary
+    //1. Get temp path | 2. New target path | 3. Have fs read binary | 4. Once read, write binary to target | 5. Insert filename into db | 6. Send user to /
 });
 
 console.log("App is listening on Port 4442");

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include header %>
+</head>
+<body>
+    <% include navbar %>
+    <div class="container gp_container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h2>Upload Your Guinea Pig Image!</h2>
+                    <form method="post" action="/formSubmit" enctype="multipart/form-data">
+                        <div class="formDiv">
+                            <label for="guineaPigName">Guinea Pig Name</label>
+                            <input type="text" name="guineaPigName" placeholder="Guinea Pig Name" />
+                            <label for="imageToUpload">Image File</label>
+                            <input type="file" name="imageToUpload" />
+                            <input type="submit" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <div class="row text-center">
+            <div clss="col-sm-12 text-center">
+                <h2 class="text-info">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
