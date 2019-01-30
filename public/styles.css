@@ -33,3 +33,15 @@ body{
     flex-direction:column;
     align-items: center;
 }
+
+.navbar{
+    font-family:'Patrick Hand',cursive;
+}
+
+.navbar-brand{
+    font-size:3rem;
+}
+
+.navbar-nav{
+    font-size:2rem;
+}

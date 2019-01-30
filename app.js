@@ -186,6 +186,30 @@ app.post('/formSubmit',upload.single('imageToUpload'),(req,res,next)=>{
     //Get animal name from req.body 
     //Get image from req.file and convert it from binary
     //1. Get temp path | 2. New target path | 3. Have fs read binary | 4. Once read, write binary to target | 5. Insert filename into db | 6. Send user to /
+    const tempPath = req.file.path;
+    const targetQuery = `SELECT * FROM guineapigs ORDER BY id DESC LIMIT 1;`;
+    let lastId = '';
+    connection.query(targetQuery,(err,results)=>{
+        if(err){throw err;}
+        lastId = results[0].id;
+    });
+    const targetPath = `public/images/gp_${lastId + 1}.jpg`;
+    fs.readFile(tempPath,(err,fileContents)=>{
+        if(err){throw err;}
+        fs.writeFile(targetPath,fileContents,(error_2)=>{
+            if(error_2){throw error_2;}
+            const insertGuineaPigQuery = `INSERT INTO guineapigs (id,name,image)
+                VALUES
+                (DEFAULT,?,?);`;
+            connection.query(insertGuineaPigQuery,[req.body.guineaPigName,req.file.originalname],(dbErr,dbResults)=>{
+                if(dbErr){
+                    throw dbErr;
+                }else{
+                    res.redirect('/');
+                }
+            });
+        });
+    });
 });
 
 console.log("App is listening on Port 4442");
