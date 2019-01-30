@@ -12,7 +12,7 @@ app.use(helmet()); //Helmets protect bikers and Express apps :^ )
 const sessionOptions = ({
     secret: config.sessionSecret,
     resave: false,
-    saveUnitialized: true,
+    saveUninitialized: true,
     //cookie: {secure:true} This is needed when you have an https site
 });
 app.use(expressSession(sessionOptions));
