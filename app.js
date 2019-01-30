@@ -192,21 +192,21 @@ app.post('/formSubmit',upload.single('imageToUpload'),(req,res,next)=>{
     connection.query(targetQuery,(err,results)=>{
         if(err){throw err;}
         lastId = results[0].id;
-    });
-    const targetPath = `public/images/gp_${lastId + 1}.jpg`;
-    fs.readFile(tempPath,(err,fileContents)=>{
-        if(err){throw err;}
-        fs.writeFile(targetPath,fileContents,(error_2)=>{
-            if(error_2){throw error_2;}
-            const insertGuineaPigQuery = `INSERT INTO guineapigs (id,name,image)
-                VALUES
-                (DEFAULT,?,?);`;
-            connection.query(insertGuineaPigQuery,[req.body.guineaPigName,req.file.originalname],(dbErr,dbResults)=>{
-                if(dbErr){
-                    throw dbErr;
-                }else{
-                    res.redirect('/');
-                }
+        const targetPath = `public/images/gp_${lastId + 1}.jpg`;
+        fs.readFile(tempPath,(err,fileContents)=>{
+            if(err){throw err;}
+            fs.writeFile(targetPath,fileContents,(error_2)=>{
+                if(error_2){throw error_2;}
+                const insertGuineaPigQuery = `INSERT INTO guineapigs (id,name,image)
+                    VALUES
+                    (DEFAULT,?,?);`;
+                connection.query(insertGuineaPigQuery,[req.body.guineaPigName,`gp_${lastId + 1}.jpg`],(dbErr,dbResults)=>{
+                    if(dbErr){
+                        throw dbErr;
+                    }else{
+                        res.redirect('/');
+                    }
+                });
             });
         });
     });
