@@ -1,3 +1,7 @@
+const config = require('../config'); //Grabs the config from the current directory
+const mysql = require('mysql'); //Grabs mysql
+let connection = mysql.createConnection(config.db); //Create mysql connection to database
+
 const getHome = (req,res,next)=>{
     if(!req.session.loggedIn){
         res.redirect('/login?msg=mustLogin');
